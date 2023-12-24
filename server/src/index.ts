@@ -1,3 +1,29 @@
+import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
-// import { connectDB } from './config/db.js';
+import { handleError } from './middlewares/error.middlewares';
+import { connect } from './db/mongo.db';
+import authRoutes from './routes/auth.routes';
+
+dotenv.config();
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+app.use(authRoutes);
+
+app.use(handleError);
+
+const PORT = process.env.PORT || 8080;
+
+(async () => {
+  try {
+    await connect();
+    app.listen(PORT, () => {
+      console.log(`Listening on port ${PORT}...`);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+})();
