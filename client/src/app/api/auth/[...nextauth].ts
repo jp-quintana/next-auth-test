@@ -1,7 +1,7 @@
-import NextAuth from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-const options = {
+const options: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       // The name to display on the sign in form (e.g. "Sign in with...")
@@ -30,29 +30,36 @@ const options = {
       },
     }),
   ],
-  // callbacks: {
-  //   jwt: async ({ token, user }) => {
-  //     if (user) {
-  //       token = {
-  //         ...token,
-  //         id: user.id,
-  //         username: user.username,
-  //         accessToken: user.accessToken,
-  //       };
-  //     }
-  //     return token;
-  //   },
-  //   session: async ({ session, token }) => {
-  //     if (token) {
-  //       session.user = {
-  //         id: token.id,
-  //         username: token.username,
-  //       };
-  //       session.accessToken = token.accessToken;
-  //     }
-  //     return session;
-  //   },
-  // },
+  callbacks: {
+    async jwt({ token, user }) {
+      return { ...token, ...user };
+    },
+    async session({ session, token, user }) {
+      session.user = token;
+      return session;
+    },
+    // jwt: async ({ token, user }) => {
+    //   if (user) {
+    //     token = {
+    //       ...token,
+    //       id: user.id,
+    //       username: user.username,
+    //       accessToken: user.accessToken,
+    //     };
+    //   }
+    //   return token;
+    // },
+    // session: async ({ session, token }) => {
+    //   if (token) {
+    //     session.user = {
+    //       id: token.id,
+    //       username: token.username,
+    //     };
+    //     session.accessToken = token.accessToken;
+    //   }
+    //   return session;
+    // },
+  },
   // secret: 'your-secret-key',
   // session: {
   //   jwt: true,
