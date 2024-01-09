@@ -1,9 +1,14 @@
 import jwt from 'jsonwebtoken';
 
 import CustomError from '../models/error.model';
+import { RequestHandler } from 'express';
 
-export const checkAuth = (req, res, next) => {
-  const token = req.header('x-auth-token');
+export const checkAuth: RequestHandler = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) return next(new CustomError('Unauthorized!', 401));
+
+  const token = authHeader.split(' ')[1];
 
   if (!token)
     return next(new CustomError('No token, authorization denied.', 401));

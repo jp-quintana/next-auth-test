@@ -4,6 +4,7 @@ import cors from 'cors';
 import { handleError } from './middlewares/error.middlewares';
 import { connect } from './db/mongo.db';
 import authRoutes from './routes/auth.routes';
+import userRoutes from './routes/user.routes';
 
 dotenv.config();
 const app = express();
@@ -12,6 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/auth/', authRoutes);
+app.use('/api/user/', userRoutes);
 
 app.use(handleError);
 

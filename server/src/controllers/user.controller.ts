@@ -1,13 +1,13 @@
-import CustomError from '../models/error.model';
+import { fetchProfile } from '../services/user.services';
 
-import { fetchUser } from '../services/user.services';
+import { RequestHandler } from 'express';
 
-export const getUser = async (req, res, next) => {
+export const getProfile: RequestHandler = async (req, res, next) => {
   try {
-    const user = await fetchUser(req.user.id);
+    const user = await fetchProfile(req.user.id);
 
     res.json(user);
   } catch (err) {
-    next(err);
+    next();
   }
 };
