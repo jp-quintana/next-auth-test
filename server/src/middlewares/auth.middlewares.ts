@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import CustomError from '../models/error.model';
 import { RequestHandler } from 'express';
 
-export const checkAuth: RequestHandler = (req, res, next) => {
+export const checkAuth: RequestHandler = (req, _, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) return next(new CustomError('Unauthorized!', 401));
