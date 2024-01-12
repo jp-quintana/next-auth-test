@@ -4,28 +4,21 @@ import User from '../dao/user';
 import CustomError from '../models/error.model';
 
 export const register = async (userDetails) => {
-  const existingUser = await User.fetchByEmail(userDetails.email);
-
-  if (existingUser) {
-    throw new CustomError('Email address is already in use.', 409);
-  }
-
-  const { name, lastName, email, password } = userDetails;
-
-  const salt = await bcrypt.genSalt(10);
-
-  const encryptedPassword = await bcrypt.hash(password, salt);
-
-  const newUser = await User.create({
-    name,
-    lastName,
-    email,
-    password: encryptedPassword,
-  });
-
-  const payload = { user: { id: newUser.id } };
-
-  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '365d' });
+  // const existingUser = await User.fetchByEmail(userDetails.email);
+  // if (existingUser) {
+  //   throw new CustomError('Email address is already in use.', 409);
+  // }
+  // const { name, lastName, email, password } = userDetails;
+  // const salt = await bcrypt.genSalt(10);
+  // const encryptedPassword = await bcrypt.hash(password, salt);
+  // const newUser = await User.create({
+  //   name,
+  //   lastName,
+  //   email,
+  //   password: encryptedPassword,
+  // });
+  // const payload = { user: { id: newUser.id } };
+  // return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '365d' });
 };
 
 export const login = async (userCredentials) => {
