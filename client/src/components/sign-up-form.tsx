@@ -50,6 +50,8 @@ const SignInForm = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const result = await axios.post("/api/auth/register", values);
+
+    console.log(result);
   };
 
   return (
