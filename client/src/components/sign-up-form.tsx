@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import axios from "@/lib/axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -13,11 +13,10 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
-
-import { Input, InputProps } from "./ui/input";
+import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 
-import { Eye, EyeOff } from "lucide-react";
+import PasswordInput from "./password-input";
 
 const formSchema = z
   .object({
@@ -28,28 +27,14 @@ const formSchema = z
       .min(1, { message: "Email is empty!" })
       .email({ message: "Email is invalid!" }),
     password: z.string().min(1, { message: "Password is empty!" }),
-    confirmPassword: z.string().min(1, { message: "Password is empty!" }),
+    confirmPassword: z
+      .string()
+      .min(1, { message: "Password must be confirmed!" }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match!",
     path: ["confirmPassword"],
   });
-
-const PasswordInput = (props: InputProps) => {
-  const [show, setShow] = useState(false);
-
-  return (
-    <div className="relative flex">
-      <Input className="pr-9" type={!show ? "password" : "text"} {...props} />
-      <div
-        onClick={() => setShow((prevState) => !prevState)}
-        className="z-1 absolute right-2 self-center rounded-full p-1 hover:cursor-pointer hover:bg-accent"
-      >
-        {!show ? <Eye size={16} /> : <EyeOff size={16} />}
-      </div>
-    </div>
-  );
-};
 
 const SignInForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -63,8 +48,8 @@ const SignInForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const result = await axios.post("/api/auth/register", values);
   };
 
   return (

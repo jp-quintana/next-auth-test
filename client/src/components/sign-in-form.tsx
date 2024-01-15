@@ -12,9 +12,10 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
-
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import PasswordInput from "./password-input";
+import axios from "@/lib/axios";
 
 const formSchema = z.object({
   email: z
@@ -33,8 +34,10 @@ const SignInForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const result = await axios.post("/api/auth/login", values);
+
+    console.log(result);
   };
 
   return (
@@ -60,7 +63,7 @@ const SignInForm = () => {
             <FormItem>
               <FormLabel>Password:</FormLabel>
               <FormControl>
-                <Input placeholder="" {...field} />
+                <PasswordInput {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
