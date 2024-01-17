@@ -9,22 +9,22 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, _req) {
-        console.log(credentials);
-        return null;
-        // const { email, password } = credentials;
+      async authorize(credentials: { email: string; password: string }, _req) {
+        const { email, password } = credentials;
+        if (!email || !password) return null;
 
-        // await fetch(`${process.env.API_URL}/login`);
-        // // Add logic here to look up the user from the credentials supplied
-        // const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
-        // if (user) {
-        //   // Any object returned will be saved in `user` property of the JWT
-        //   return user;
-        // } else {
-        //   // If you return null then an error will be displayed advising the user to check their details.
-        //   return null;
-        //   // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
-        // }
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json", // Set the content type to JSON if sending JSON data
+            // Add any other headers if needed
+          },
+          body: JSON.stringify({ email, password }), // Convert the data to JSON format
+        };
+
+        const token = await fetch(`${process.env.API_URL}/login`, options);
+
+        console.log(token);
       },
     }),
   ],
