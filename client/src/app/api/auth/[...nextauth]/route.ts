@@ -4,27 +4,37 @@ import CredentialsProvider from "next-auth/providers/credentials";
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
+      type: "credentials",
       name: "Credentials",
       credentials: {
         email: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials: { email: string; password: string }, _req) {
-        const { email, password } = credentials;
+      async authorize(credentials, _req) {
+        const { email, password } = credentials as {
+          email: string;
+          password: string;
+        };
+
         if (!email || !password) return null;
 
         const options = {
           method: "POST",
           headers: {
-            "Content-Type": "application/json", // Set the content type to JSON if sending JSON data
-            // Add any other headers if needed
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email, password }), // Convert the data to JSON format
+          body: JSON.stringify({ email, password }),
         };
 
-        const token = await fetch(`${process.env.API_URL}/login`, options);
-
-        console.log(token);
+        try {
+          const res = await fetch(`${process.env.API_URL}/auth/login`, options);
+          console.log(res);
+          const data = await res.json();
+          console.log("aca", data);
+        } catch (err) {
+          console.log(err);
+        }
+        return null;
       },
     }),
   ],
