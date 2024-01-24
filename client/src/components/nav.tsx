@@ -1,15 +1,26 @@
 import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 
 const Nav = () => {
   return (
-    <nav className="mx-auto flex max-w-6xl justify-between py-3">
-      <p>logo</p>
-      <ul className="flex gap-6">
+    <nav className="mx-auto flex max-w-6xl items-center justify-between py-3">
+      <p>next-auth-test</p>
+      <ul className="flex items-center gap-6">
         <li>
-          <Link href="/sign-in">sign in</Link>
+          <Link
+            className={buttonVariants({ variant: "ghost" })}
+            href="/sign-in"
+          >
+            Sign in
+          </Link>
         </li>
         <li>
-          <Link href="/sign-in">sign up</Link>
+          <Link
+            className={buttonVariants({ variant: "default" })}
+            href="/sign-up"
+          >
+            Sign up
+          </Link>
         </li>
       </ul>
     </nav>
