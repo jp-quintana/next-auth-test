@@ -1,1 +1,0 @@
-Trying out next-auth.
