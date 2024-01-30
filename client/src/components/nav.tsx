@@ -15,10 +15,7 @@ const Nav = () => {
           </Link>
         </li>
         <li>
-          <Link
-            className={buttonVariants({ variant: "default" })}
-            href="/sign-up"
-          >
+          <Link className={buttonVariants()} href="/sign-up">
             Sign up
           </Link>
         </li>
