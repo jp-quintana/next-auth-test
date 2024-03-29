@@ -12,7 +12,8 @@ export const registerUser: RequestHandler = async (req, res, next) => {
       throw new CustomError('Passwords do no match.', 422);
     }
     const token = await register(req.body);
-    res.json({ token });
+    res.cookie('cookie', token, { httpOnly: true, maxAge: 10000 });
+    res.status(200).send({ message: 'success' });
   } catch (err) {
     next(err);
   }
