@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import Nav from "@/components/nav";
 
 export const metadata: Metadata = {
-  title: "Home",
+  title: "Dashboard",
 };
 
 export default function MainLayout({
@@ -12,9 +11,6 @@ export default function MainLayout({
 }) {
   return (
     <>
-      <header>
-        <Nav />
-      </header>
       <main className="flex min-h-screen items-center justify-center">
         {children}
       </main>

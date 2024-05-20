@@ -2,56 +2,42 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: NextAuthOptions = {
+  callbacks: {
+    // async redirect({ url, baseUrl }) {
+    //   console.log({ url, baseUrl });
+    //   return baseUrl;
+    // },
+    async session({ session, token: sessionToken }) {
+      console.log({ sessionToken, session });
+
+      return session;
+    },
+    async jwt({ token, user }) {
+      console.log({ token, user });
+      return token;
+    },
+  },
   providers: [
     CredentialsProvider({
-      type: "credentials",
-      name: "Credentials",
-      credentials: {
-        email: { label: "Username", type: "text" },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials, _req) {
-        const { email, password } = credentials as {
-          email: string;
-          password: string;
-        };
+      credentials: {},
+      authorize: async (_credentials, _req) => {
+        // const { email, password } = credentials as {
+        //   email: string;
+        //   password: string;
+        // };
 
-        if (!email || !password) return null;
+        // if (!email || !password) return null;
 
-        const options = {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        };
+        const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
 
-        try {
-          const res = await fetch(`${process.env.API_URL}/auth/login`, options);
-          console.log(res);
-          const data = await res.json();
-          console.log("aca", data);
-        } catch (err) {
-          console.log(err);
+        if (user) {
+          return user;
+        } else {
+          return null;
         }
-        return null;
       },
     }),
   ],
-  // callbacks: {
-  //   async jwt({ token, user }) {
-  //     return { ...token, ...user };
-  //   },
-  //   async session({ session, token, user }) {
-  //     session.user = token;
-  //     return session;
-  //   },
-  // },
-  // secret: "secret",
-  // session: {
-  //   strategy: "jwt",
-  // },
-  // debug: process.env.NODE_ENV === "development",
 };
 
 export const handler = NextAuth(authOptions);

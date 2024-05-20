@@ -1,6 +1,6 @@
 "use client";
 
-import axios from "@/lib/axios";
+import { axios } from "@/lib/axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -51,7 +51,7 @@ const SignInForm = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const result = await axios.post("/api/auth/register", values);
 
-    console.log(result);
+    // console.log(result);
   };
 
   return (

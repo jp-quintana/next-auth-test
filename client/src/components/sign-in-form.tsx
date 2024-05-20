@@ -1,6 +1,5 @@
 "use client";
 
-import axios from "@/lib/axios";
 import { signIn } from "next-auth/react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
