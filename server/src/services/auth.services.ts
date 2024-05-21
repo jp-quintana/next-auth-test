@@ -42,5 +42,11 @@ export const login = async (user: UserCredentials) => {
 
   const payload = { user: { id: existingUser.id } };
 
-  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '365d' });
+  return {
+    id: existingUser.id,
+    name: existingUser.name,
+    lastName: existingUser.lastName,
+    email: existingUser.email,
+    token: jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '30d' }),
+  };
 };

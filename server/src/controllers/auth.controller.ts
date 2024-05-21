@@ -27,9 +27,11 @@ export const loginUser: RequestHandler = async (req, res, next) => {
     //   throw new CustomError('Login failed.', 422, errors.array());
     // }
 
-    const token = await login(req.body);
+    const user = await login(req.body);
 
-    res.json({ token });
+    console.log({ user });
+
+    res.json({ user });
   } catch (err) {
     next(err);
   }

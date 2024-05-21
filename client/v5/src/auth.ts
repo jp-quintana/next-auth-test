@@ -8,11 +8,14 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       if (session.user && sessionToken.sub) session.user.id = sessionToken.sub;
       if (session.user && sessionToken.accessToken)
         session.user.accessToken = sessionToken.accessToken;
+      if (session.user && sessionToken.lastName)
+        session.user.lastName = sessionToken.lastName;
       return session;
     },
     async jwt({ token, user }) {
-      // console.log({ token, user });
+      console.log({ token, user });
       if (user?.accessToken) token.accessToken = user.accessToken;
+      if (user?.lastName) token.lastName = user.lastName;
       return token;
     },
   },
@@ -29,14 +32,13 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 
           const result = await axios.post("/auth/login", { email, password });
 
-          if (result?.data?.token) {
-            console.log("in here");
+          if (result?.data?.user) {
             const user = {
-              id: "1",
-              name: "J",
-              lastName: "Smith",
-              email,
-              accessToken: result.data.token,
+              id: result.data.user.id,
+              name: result.data.user.name,
+              lastName: result.data.user.lastName,
+              email: result.data.user.email,
+              accessToken: result.data.user.token,
             };
             return user;
           }
