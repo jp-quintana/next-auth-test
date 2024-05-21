@@ -19,7 +19,14 @@ export const register = async (user: UserRegisterCredentials) => {
     password: encryptedPassword,
   });
   const payload = { user: { id: newUser.id } };
-  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '365d' });
+
+  return {
+    id: newUser.id,
+    name: newUser.name,
+    lastName: newUser.lastName,
+    email: newUser.email,
+    token: jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '30d' }),
+  };
 };
 
 export const login = async (user: UserCredentials) => {

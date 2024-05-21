@@ -11,9 +11,11 @@ export const registerUser: RequestHandler = async (req, res, next) => {
     if (password !== confirmPassword) {
       throw new CustomError('Passwords do no match.', 422);
     }
-    const token = await register(req.body);
-    res.cookie('cookie', token, { httpOnly: true, maxAge: 10000 });
-    res.status(200).send({ message: 'success' });
+    const user = await register(req.body);
+    // res.cookie('cookie', token, { httpOnly: true, maxAge: 10000 });
+    // res.status(200).send({ message: 'success' });
+
+    res.json({ user });
   } catch (err) {
     next(err);
   }
@@ -28,8 +30,6 @@ export const loginUser: RequestHandler = async (req, res, next) => {
     // }
 
     const user = await login(req.body);
-
-    console.log({ user });
 
     res.json({ user });
   } catch (err) {
