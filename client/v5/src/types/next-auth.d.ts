@@ -4,8 +4,8 @@ declare module "next-auth" {
     user?: DefaultUser & {
       id: string;
       lastName: string;
+      accessToken: string;
     };
-    accessToken: string;
   }
 
   interface User extends DefaultUser {
