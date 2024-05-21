@@ -13,7 +13,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return session;
     },
     async jwt({ token, user }) {
-      console.log({ token, user });
+      // console.log({ token, user });
       if (user?.accessToken) token.accessToken = user.accessToken;
       if (user?.lastName) token.lastName = user.lastName;
       return token;
