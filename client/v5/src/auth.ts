@@ -11,36 +11,40 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return session;
     },
     async jwt({ token, user }) {
-      console.log({ token, user });
+      // console.log({ token, user });
       if (user?.accessToken) token.accessToken = user.accessToken;
       return token;
     },
   },
   providers: [
     CredentialsProvider({
-      credentials: {},
       authorize: async (credentials) => {
         const { email, password } = credentials as {
           email: string;
           password: string;
         };
 
-        if (!email || !password) return null;
+        try {
+          if (!email || !password) return null;
 
-        const result = await axios.post("/auth/login", { email, password });
+          const result = await axios.post("/auth/login", { email, password });
 
-        if (result.data) {
-          const user = {
-            id: "1",
-            name: "J",
-            lastName: "Smith",
-            email,
-            accessToken: result.data.token,
-          };
-          return user;
-        } else {
-          return null;
+          if (result?.data?.token) {
+            console.log("in here");
+            const user = {
+              id: "1",
+              name: "J",
+              lastName: "Smith",
+              email,
+              accessToken: result.data.token,
+            };
+            return user;
+          }
+        } catch (err) {
+          console.log(err);
         }
+
+        return null;
       },
     }),
   ],

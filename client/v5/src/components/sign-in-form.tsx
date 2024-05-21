@@ -16,6 +16,8 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import PasswordInput from "./password-input";
 import { signIn } from "next-auth/react";
+import { AuthError } from "next-auth";
+import { login } from "@/lib/actions/auth.actions";
 
 const formSchema = z.object({
   email: z
@@ -35,7 +37,10 @@ const SignInForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    await signIn("credentials", { ...values, redirectTo: "/dashboard" });
+    const result = await login(values);
+
+    console.log(result);
+    // await signIn("credentials", { ...values, redirectTo: "/dashboard" });
   };
 
   return (
