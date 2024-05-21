@@ -1,7 +1,5 @@
 "use client";
 
-import { signIn } from "next-auth/react";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -17,6 +15,7 @@ import {
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import PasswordInput from "./password-input";
+import { signIn } from "next-auth/react";
 
 const formSchema = z.object({
   email: z
@@ -36,11 +35,7 @@ const SignInForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    // const result = await axios.post("/api/auth/login", values);
-
-    await signIn("credentials", { ...values, redirect: false });
-
-    // console.log(result);
+    await signIn("credentials", { ...values, redirectTo: "/dashboard" });
   };
 
   return (

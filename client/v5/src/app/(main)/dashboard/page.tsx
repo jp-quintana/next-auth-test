@@ -1,11 +1,9 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { auth } from "@/auth";
 import LogoutButton from "@/components/LogoutButton";
 
 const page = async () => {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
-  console.log(session);
   return (
     <>
       <div>{JSON.stringify(session)}</div>
