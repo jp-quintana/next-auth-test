@@ -17,6 +17,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 
 import PasswordInput from "./password-input";
+import { login } from "@/lib/actions/auth.actions";
 
 const formSchema = z
   .object({
@@ -51,7 +52,8 @@ const SignInForm = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const result = await axios.post("/auth/register", values);
 
-    // console.log(result);
+    if (result?.data?.user?.token)
+      await login({ email: values.email, password: values.password });
   };
 
   return (
