@@ -3,38 +3,48 @@ import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    // async redirect({ url, baseUrl }) {
-    //   console.log({ url, baseUrl });
-    //   return baseUrl;
-    // },
     async session({ session, token: sessionToken }) {
-      console.log({ sessionToken, session });
-
+      // console.log({ session, sessionToken });
+      if (session?.user && sessionToken?.accessToken)
+        session.user.accessToken = sessionToken.accessToken as string;
+      if (session?.user && sessionToken?.sub)
+        session.user.id = sessionToken.sub;
       return session;
     },
     async jwt({ token, user }) {
-      console.log({ token, user });
+      // console.log({ token, user });
+      if (user?.accessToken) token.accessToken = user.accessToken;
       return token;
     },
   },
   providers: [
     CredentialsProvider({
       credentials: {},
-      authorize: async (_credentials, _req) => {
-        // const { email, password } = credentials as {
-        //   email: string;
-        //   password: string;
-        // };
+      authorize: async (credentials) => {
+        const { email, password } = credentials as {
+          email: string;
+          password: string;
+        };
 
-        // if (!email || !password) return null;
+        if (!email || !password) return null;
 
-        const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
+        // llamada base de datos
+        // ...
+
+        // retorna el objeto user + token
+        const user = {
+          id: "1",
+          name: "J Smith",
+          email: "jsmith@example.com",
+          accessToken:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMjMsInVzZXJuYW1lIjoiZXhhbXBsZXVzZXIiLCJleHAiOjE2MzQyNzQ0MDB9.m1V4NC5-QSHOrRmCMTU2qDSR_8CqsbVzEHGx4xxTo4I",
+        };
 
         if (user) {
           return user;
-        } else {
-          return null;
         }
+
+        return null;
       },
     }),
   ],
