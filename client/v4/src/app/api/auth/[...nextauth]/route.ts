@@ -1,3 +1,4 @@
+import { axios } from "@/lib/axios";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -28,19 +29,16 @@ export const authOptions: NextAuthOptions = {
 
         if (!email || !password) return null;
 
-        // llamada base de datos
-        // ...
+        const result = await axios.post("/auth/login", { email, password });
 
-        // retorna el objeto user + token
-        const user = {
-          id: "1",
-          name: "J Smith",
-          email: "jsmith@example.com",
-          accessToken:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMjMsInVzZXJuYW1lIjoiZXhhbXBsZXVzZXIiLCJleHAiOjE2MzQyNzQ0MDB9.m1V4NC5-QSHOrRmCMTU2qDSR_8CqsbVzEHGx4xxTo4I",
-        };
-
-        if (user) {
+        if (result?.data?.user) {
+          const user = {
+            id: result.data.user.id,
+            name: result.data.user.name,
+            lastName: result.data.user.lastName,
+            email: result.data.user.email,
+            accessToken: result.data.user.token,
+          };
           return user;
         }
 

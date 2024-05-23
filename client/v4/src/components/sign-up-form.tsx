@@ -17,6 +17,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 
 import PasswordInput from "./password-input";
+import { signIn } from "next-auth/react";
 
 const formSchema = z
   .object({
@@ -49,9 +50,14 @@ const SignInForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const result = await axios.post("/api/auth/register", values);
+    // TODO: fix
+    const result = await axios.post("/auth/register", values);
 
-    // console.log(result);
+    if (result?.data?.user?.token)
+      await signIn("credentials", {
+        ...values,
+        redirectTo: "/dashboard",
+      });
   };
 
   return (

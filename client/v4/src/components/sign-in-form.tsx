@@ -36,11 +36,7 @@ const SignInForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    // const result = await axios.post("/api/auth/login", values);
-
     await signIn("credentials", { ...values, redirectTo: "/dashboard" });
-
-    // console.log(result);
   };
 
   return (
