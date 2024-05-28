@@ -1,12 +1,12 @@
 "use client";
 
-import { axios } from "@/lib/axios";
+import { fetchUser } from "@/lib/actions/user.actions";
 
 const GetUserButton = () => {
   const handleFetch = async () => {
-    const result = await axios.get("/user");
+    const data = await fetchUser();
 
-    if (result?.data) console.log(result.data);
+    console.log(data);
   };
   return <button onClick={handleFetch}>Fetch user</button>;
 };

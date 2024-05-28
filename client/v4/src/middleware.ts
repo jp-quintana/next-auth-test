@@ -14,10 +14,10 @@ export default withAuth(
     const isPublicRoute = publicRoutes.includes(pathname);
 
     if (isPublicRoute && isLoggedIn)
-      return NextResponse.rewrite(new URL("/dashboard", req.url));
+      return NextResponse.redirect(new URL("/dashboard", req.url));
 
-    if (isAuthRoute && isLoggedIn)
-      return NextResponse.rewrite(new URL("/dashboard", req.url));
+    if (isAuthRoute && !isLoggedIn)
+      return NextResponse.redirect(new URL("/", req.url));
 
     return NextResponse.next();
   },
